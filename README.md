@@ -7,3 +7,5 @@ A Car Wash System with a very nice and fully configurable interface. The Car Was
 - 100% optimised, like all our scripts.
 - Fully configurable interface to your liking.
 - TOTALLY FREE! 
+
+💜 Any error or suggestion, we are willing to listen to it on our discord support channel!
