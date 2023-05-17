@@ -1,0 +1,352 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap");
+
+* {
+   color: white;
+   margin: 0;
+   padding: 0;
+   font-family: "Poppins", sans-serif;
+   transition: 0.25s;
+   user-select: none;
+}
+
+body {
+   overflow: hidden;
+}
+
+body > .bg {
+   position: absolute;
+   left: 0;
+   top: 0;
+   width: 100%;
+   height: 100%;
+   z-index: 2;
+}
+
+.overlay {
+   position: absolute;
+   left: 0;
+   top: 0;
+   width: 100%;
+   height: 100%;
+   z-index: 3;
+   background: linear-gradient(
+      130.7deg,
+      #000000 0.58%,
+      rgba(0, 0, 0, 0) 65.77%
+   );
+}
+
+.container {
+   position: absolute;
+   left: 25px;
+   top: 50%;
+   transform: translateY(-50%);
+   display: flex;
+   gap: 10px;
+   flex-flow: column;
+   align-items: center;
+   width: 650px;
+   z-index: 5;
+
+   .title {
+      display: flex;
+      align-items: center;
+      gap: 7.5px;
+      font-size: 24px;
+
+      span {
+         font-weight: bold;
+      }
+   }
+
+   .slider {
+      position: relative;
+      height: 550px;
+      width: 650px;
+      overflow-x: hidden;
+
+      .controller {
+         position: absolute;
+         left: 50%;
+         top: 250px;
+         transform: translateX(-50%);
+         z-index: 100;
+         display: flex;
+         flex-flow: column;
+         align-items: center;
+
+         .arrows {
+            display: flex;
+            gap: 185px;
+
+            .arrow {
+               width: 40px;
+               height: 40px;
+               display: flex;
+               justify-content: center;
+               align-items: center;
+               background: linear-gradient(
+                  90deg,
+                  rgba(87, 87, 87, 0.8) 0%,
+                  rgba(6, 6, 6, 0) 100.49%
+               );
+               border: 1px solid #ffffff;
+               border-radius: 999px;
+               cursor: pointer;
+
+               &:hover {
+                  background: rgba(1, 209, 255, 0.23);
+                  border-color: rgba(1, 209, 255, 1);
+               }
+
+               ion-icon {
+                  font-size: 24px;
+               }
+            }
+         }
+
+         .button {
+            margin-top: 185px;
+            position: relative;
+            padding-top: 7.5px;
+            padding-bottom: 7.5px;
+            padding-left: 25px;
+            padding-right: 25px;
+            background: linear-gradient(
+               90deg,
+               rgba(105, 105, 105, 0) 0.22%,
+               rgba(217, 213, 213, 0.59) 98.97%
+            );
+            box-shadow: 0px 0px 35px 0.3px rgba(255, 255, 255, 0.28);
+            border-radius: 5px;
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            font-weight: bold;
+            cursor: pointer;
+
+            &:hover {
+               padding-left: 35px;
+               padding-right: 35px;
+
+               background: rgba(1, 209, 255, 0.23);
+               border-color: rgba(1, 209, 255, 1);
+            }
+
+            span {
+               font-weight: 200;
+            }
+
+            .vector1 {
+               position: absolute;
+               width: 30px;
+               height: 100%;
+               left: 0;
+               top: 0;
+            }
+            .vector2 {
+               position: absolute;
+               width: 30px;
+               height: 100%;
+               left: 15px;
+               top: 0;
+            }
+         }
+      }
+
+      .slider-inner {
+         position: absolute;
+         display: flex;
+         align-items: center;
+         gap: 10px;
+         left: 0;
+         top: 0;
+         width: 650px;
+         height: 100%;
+
+         .package {
+            position: relative;
+            min-width: 200px;
+            width: 200px;
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            height: 500px;
+            box-sizing: border-box;
+            border-radius: 2px;
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            overflow: hidden;
+            .wave {
+               position: absolute;
+               bottom: 0;
+               right: -250px;
+               width: 250px;
+               height: 391px;
+               background: rgba(1, 209, 255, 0.6);
+               filter: blur(100px);
+               backdrop-filter: blur(100px);
+               opacity: 0;
+               z-index: -1;
+            }
+
+            .vector3,
+            .vector4 {
+               position: absolute;
+               opacity: 0;
+               z-index: -1;
+            }
+
+            .vector3 {
+               bottom: 0;
+               left: 0px;
+            }
+
+            .vector4 {
+               bottom: 0;
+               left: -5px;
+            }
+
+            .package-description,
+            .package-percentage {
+               display: none;
+            }
+
+            &.active {
+               width: 230px !important;
+               min-width: 230px;
+               height: 550px;
+               .title {
+                  padding-bottom: 7.5px;
+                  padding-top: 7.5px;
+                  border-color: rgba(1, 209, 255, 1);
+                  background-color: rgba(1, 209, 255, 0.23);
+               }
+
+               .vector3,
+               .vector4,
+               .wave {
+                  opacity: 1;
+               }
+
+               .price {
+                  padding-bottom: 7.5px;
+                  padding-top: 7.5px;
+               }
+
+               .title {
+                  margin-top: 70px;
+               }
+
+               .bg {
+                  filter: blur(0) grayscale(1);
+               }
+            }
+
+            .title {
+               display: flex;
+               justify-content: center;
+               margin-top: 50px;
+               width: 100%;
+               background: rgba(24, 24, 24, 0.5);
+               backdrop-filter: blur(2px);
+               text-align: center;
+               font-size: 16px;
+               padding-top: 5px;
+               padding-bottom: 5px;
+               border-top: 1.5px solid rgba(255, 255, 255, 0.4);
+               border-bottom: 1.5px solid rgba(255, 255, 255, 0.4);
+            }
+
+            .price {
+               display: flex;
+               justify-content: center;
+               margin-top: 300px;
+               width: 100%;
+               background: rgba(24, 24, 24, 0.5);
+               backdrop-filter: blur(2px);
+               text-align: center;
+               font-size: 16px;
+               padding-top: 5px;
+               padding-bottom: 5px;
+               border-top: 1.5px solid rgba(255, 255, 255, 0.4);
+               border-bottom: 1.5px solid rgba(255, 255, 255, 0.4);
+
+               span {
+                  margin-left: 10px;
+                  font-weight: bold;
+               }
+            }
+
+            .bg {
+               position: absolute;
+               top: 50%;
+               left: 50%;
+               transform: translate(-50%, -50%);
+               z-index: -2;
+               filter: blur(2px) grayscale(1);
+            }
+         }
+      }
+   }
+
+   .footer {
+      position: relative;
+      box-sizing: border-box;
+      padding: 10px;
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
+      background-color: rgba(0, 0, 0, 0.45);
+      /* Note: backdrop-filter has minimal browser support */
+
+      border-radius: 10px;
+
+      .top {
+         width: 100%;
+         position: relative;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         margin-bottom: 15px;
+
+         .left {
+            position: absolute;
+            left: 0px;
+            background: linear-gradient(
+               90deg,
+               rgba(105, 105, 105, 0) 0.22%,
+               rgba(217, 213, 213, 0.59) 98.97%
+            );
+            box-shadow: 0px 0px 35px 0.3px rgba(255, 255, 255, 0.28);
+            border-radius: 4px;
+            padding-left: 5px;
+            padding-right: 5px;
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            color: #c1c1c1;
+            font-size: 14px;
+
+            span {
+               color: white;
+            }
+         }
+
+         .title {
+            position: relative;
+            background: rgba(1, 209, 255, 0.23);
+            padding-left: 15px;
+            padding-right: 15px;
+            border-top: 1.5px solid rgba(1, 209, 255, 1);
+            border-bottom: 1.5px solid rgba(1, 209, 255, 1);
+         }
+      }
+
+      .description {
+         text-align: center;
+         font-size: 14px;
+         color: #c1c1c1;
+
+         span {
+            color: white;
+         }
+      }
+   }
+}
