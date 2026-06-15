@@ -18,6 +18,14 @@ Configuration = {
 
 }
 
+Configuration.Progress = 'ox_lib'
+--  ox_lib | buty-progress
+
+Configuration.PremiumDancePeds = {
+    's_f_y_stripper_01',
+    's_f_y_stripper_02'
+}
+
 Locations = {
 
     {

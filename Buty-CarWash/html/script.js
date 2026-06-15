@@ -1,58 +1,9 @@
-const app = new Vue({
-    el: '#app',
-
-    data: {
-        display: false
-    },
-
-    methods: {
-        select() {
-            const activePackage = document.querySelector('.package.active');
-
-            if (!activePackage) return;
-
-            const packageValue = activePackage.getAttribute('data-value');
-
-            $.post(
-                `https://${GetParentResourceName()}/wash`,
-                JSON.stringify({
-                    type: packageValue
-                })
-            );
-
-            this.display = false;
-
-            $.post(
-                `https://${GetParentResourceName()}/exit`,
-                JSON.stringify({})
-            );
-        }
-    }
-});
-
-window.addEventListener('message', function (event) {
-    const data = event.data || {};
-
-    if (data.type === 'ui') {
-        app.display = data.status === true;
-    }
-});
-
-document.onkeyup = function (data) {
-    if (data.which === 27) {
-        app.display = false;
-
-        $.post(
-            `https://${GetParentResourceName()}/exit`,
-            JSON.stringify({})
-        );
-    }
-};
-
+const app = document.querySelector('#app');
 const slider = document.querySelector('.slider-inner');
 const description = document.querySelector('.description');
 const percentage = document.querySelector('.percentage');
 const packages = document.querySelectorAll('.package');
+const buyButton = document.querySelector('#buy-service');
 
 let selectedIndex = 0;
 const leftValue = 210;
@@ -63,9 +14,12 @@ packages.forEach((item, index) => {
     }
 });
 
+function showUI(state) {
+    app.style.display = state ? 'block' : 'none';
+}
+
 function changeDescription() {
     const currentPackage = packages[selectedIndex];
-
     if (!currentPackage) return;
 
     const packageDescription = currentPackage.querySelector('.package-description');
@@ -76,52 +30,71 @@ function changeDescription() {
 }
 
 function setActivePackage(index) {
+    if (!packages[selectedIndex] || !packages[index]) return;
+
     packages[selectedIndex].classList.remove('active');
-
     selectedIndex = index;
-
     packages[selectedIndex].classList.add('active');
 
     changeDescription();
 }
 
-function updateSliderPosition(direction) {
-    if (direction === 'left') {
-        if (selectedIndex === 0) {
-            slider.style.left = `-${(packages.length - 2) * leftValue}px`;
-            setActivePackage(packages.length - 1);
-            return;
-        }
+function onLeftClick() {
+    if (selectedIndex === 0) {
+        slider.style.left = `-${(packages.length - 2) * leftValue}px`;
+        setActivePackage(packages.length - 1);
+        return;
+    }
 
-        if (selectedIndex === 1) {
-            slider.style.left = `${leftValue}px`;
-            setActivePackage(selectedIndex - 1);
-            return;
-        }
-
-        slider.style.left = `-${(selectedIndex - 2) * leftValue}px`;
+    if (selectedIndex === 1) {
+        slider.style.left = `${leftValue}px`;
         setActivePackage(selectedIndex - 1);
         return;
     }
 
-    if (direction === 'right') {
-        if (selectedIndex === packages.length - 1) {
-            slider.style.left = `${leftValue}px`;
-            setActivePackage(0);
-            return;
-        }
-
-        slider.style.left = `-${selectedIndex * leftValue}px`;
-        setActivePackage(selectedIndex + 1);
-    }
-}
-
-function onLeftClick() {
-    updateSliderPosition('left');
+    slider.style.left = `-${(selectedIndex - 2) * leftValue}px`;
+    setActivePackage(selectedIndex - 1);
 }
 
 function onRightClick() {
-    updateSliderPosition('right');
+    if (selectedIndex === packages.length - 1) {
+        slider.style.left = `${leftValue}px`;
+        setActivePackage(0);
+        return;
+    }
+
+    slider.style.left = `-${selectedIndex * leftValue}px`;
+    setActivePackage(selectedIndex + 1);
 }
+
+buyButton.addEventListener('click', function () {
+    const activePackage = document.querySelector('.package.active');
+    if (!activePackage) return;
+
+    const packageValue = activePackage.getAttribute('data-value');
+
+    $.post(`https://${GetParentResourceName()}/wash`, JSON.stringify({
+        type: packageValue
+    }));
+
+    showUI(false);
+
+    $.post(`https://${GetParentResourceName()}/exit`, JSON.stringify({}));
+});
+
+window.addEventListener('message', function (event) {
+    const data = event.data || {};
+
+    if (data.type === 'ui') {
+        showUI(data.status === true);
+    }
+});
+
+document.onkeyup = function (data) {
+    if (data.which === 27) {
+        showUI(false);
+        $.post(`https://${GetParentResourceName()}/exit`, JSON.stringify({}));
+    }
+};
 
 changeDescription();
