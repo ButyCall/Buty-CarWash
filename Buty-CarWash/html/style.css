@@ -23,6 +23,12 @@
 body {
   overflow: hidden;
 }
+#app {
+  display: none;
+}
+#app.is-visible {
+  display: block;
+}
 body > .bg {
   position: absolute;
   left: 0;
@@ -305,4 +311,137 @@ body > .bg {
 }
 .container .footer .description span {
   color: white;
+}
+
+/* Built-in progress bar */
+.buty-progress {
+  position: fixed;
+  right: 4vw;
+  bottom: 5vh;
+  z-index: 1000;
+
+  display: flex;
+  width: min(340px, 24vw);
+
+  flex-direction: column;
+  align-items: stretch;
+  gap: 7px;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transform: translateY(28px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.buty-progress.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.buty-progress-track {
+  position: relative;
+
+  width: 100%;
+  height: 3px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background: rgba(231, 231, 231, 0.28);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.65);
+}
+
+.buty-progress-fill {
+  width: 100%;
+  height: 100%;
+
+  transform: scaleX(0);
+  transform-origin: left center;
+
+  transition: none !important;
+  will-change: transform;
+}
+
+.buty-progress-pulse {
+  display: flex;
+
+  height: 12px;
+
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+}
+
+.buty-progress-pulse .line {
+  display: inline-block;
+
+  width: 5px;
+  height: 12px;
+
+  animation: buty-progress-opacity 1000ms infinite ease-in-out;
+
+  box-shadow: 0 0 4px currentColor;
+  transition: none !important;
+}
+
+.buty-progress-pulse .line-1,
+.buty-progress-pulse .line-14 {
+  animation-delay: 800ms;
+}
+
+.buty-progress-pulse .line-2,
+.buty-progress-pulse .line-3,
+.buty-progress-pulse .line-12,
+.buty-progress-pulse .line-13 {
+  animation-delay: 600ms;
+}
+
+.buty-progress-pulse .line-4,
+.buty-progress-pulse .line-11 {
+  animation-delay: 500ms;
+}
+
+.buty-progress-pulse .line-5,
+.buty-progress-pulse .line-6,
+.buty-progress-pulse .line-10 {
+  animation-delay: 400ms;
+}
+
+.buty-progress-pulse .line-7,
+.buty-progress-pulse .line-8,
+.buty-progress-pulse .line-9 {
+  animation-delay: 200ms;
+}
+
+.buty-progress-text {
+  color: #eeeeee;
+
+  font-family: "Poppins", Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+
+  letter-spacing: 1.5px;
+  line-height: 1.4;
+
+  text-align: right;
+  text-shadow:
+    0 0 3px #000000,
+    0 0 5px #000000;
+
+  text-transform: uppercase;
+}
+
+@keyframes buty-progress-opacity {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.15;
+  }
 }

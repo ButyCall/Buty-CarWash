@@ -1,12 +1,48 @@
-if Configuration.FrameWork == 'esx' then 
-    if Configuration.CoreFolderName == "" then Configuration.CoreFolderName = 'es_extended' end
-    ESX = exports[Configuration.CoreFolderName]:getSharedObject()
-    trigger = ESX.TriggerServerCallback
-elseif Configuration.FrameWork == 'qbcore' then 
-    if Configuration.CoreFolderName == "" then Configuration.CoreFolderName = 'qb-core' end
-    QBCore = exports[Configuration.CoreFolderName]:GetCoreObject()
-    trigger = QBCore.Functions.TriggerCallback
+local Framework = (Configuration.FrameWork or 'auto'):lower()
+local Core = nil
+
+local function detectFramework()
+    if Framework ~= 'auto' then return end
+
+    if GetResourceState('qbx_core') == 'started' then
+        Framework = 'qbox'
+    elseif GetResourceState('qb-core') == 'started' then
+        Framework = 'qbcore'
+    elseif GetResourceState('es_extended') == 'started' then
+        Framework = 'esx'
+    end
 end
+
+local function initializeFramework()
+    detectFramework()
+
+    if Framework == 'esx' then
+        local resourceName = Configuration.CoreFolderName ~= '' and Configuration.CoreFolderName or 'es_extended'
+        Core = exports[resourceName]:getSharedObject()
+    elseif Framework == 'qbcore' then
+        local resourceName = Configuration.CoreFolderName ~= '' and Configuration.CoreFolderName or 'qb-core'
+        Core = exports[resourceName]:GetCoreObject()
+    elseif Framework == 'qbox' then
+        local resourceName = Configuration.CoreFolderName ~= '' and Configuration.CoreFolderName or 'qbx_core'
+        Core = exports[resourceName]
+    else
+        print('^1[Buty-Carwash] No supported framework found on the client.^0')
+    end
+end
+
+local function triggerMoneyCallback(callback, serviceType)
+    if Framework == 'esx' and Core then
+        Core.TriggerServerCallback('buty:getMoney', callback, serviceType)
+    elseif Framework == 'qbcore' and Core then
+        Core.Functions.TriggerCallback('buty:getMoney', callback, serviceType)
+    elseif Framework == 'qbox' and Core then
+        lib.callback('buty:getMoney', false, callback, serviceType)
+    else
+        callback(false)
+    end
+end
+
+initializeFramework()
 
 local Type = nil
 local fov_max = 90.0
@@ -92,7 +128,11 @@ Citizen.CreateThread(function()
                     RenderScriptCams(true, true, 3000, true, false) 
                     Wait(2600)
                     SetNuiFocus(true, true)
-                    SendNUIMessage({type = "ui",status = true})
+                    SendNUIMessage({
+                        type = "ui",
+                        status = true,
+                        prices = Configuration.Prices
+                    })
                 end      
             end
             if not esta then
@@ -107,11 +147,23 @@ end)
 RegisterNUICallback("wash", function(data)
     local ped = PlayerPedId()
     local vehicle = GetPlayersLastVehicle(ped)
-    Type = data.type
-    local price = Configuration.Prices[tonumber(Type)]
+    Type = tostring(data.type or '')
+    local packageIndex = tonumber(Type)
+    local price = packageIndex and tonumber(Configuration.Prices[packageIndex]) or nil
+
+    if not price or price < 0 then
+        SendNotification("Invalid car wash package.")
+        Type = nil
+        washing = false
+        FreezeEntityPosition(ped, false)
+        FreezeEntityPosition(vehicle, false)
+        EndCam()
+        return
+    end
+
     local pedcoord = GetEntityCoords(ped)
     local vehcoord = GetEntityCoords(vehicle)
-    trigger('buty:getMoney', function (money)
+    triggerMoneyCallback(function (money)
         if money then
             SendNotification("You have paid correctly, wait for them to clean your vehicle.")
             if Type == "1" then
@@ -370,7 +422,7 @@ RegisterNUICallback("wash", function(data)
             done = 0
             SendNotification("you don't have enough money")
         end
-    end, Type, price)
+    end, Type)
 
 end)
 
@@ -457,14 +509,13 @@ SendNotification = function(message)
 end
 
 Progress = function(time, text)
-    exports['Buty-Progress']:ShowProgress(
-        time,
-        text,
-        nil,
-        {
+    SendNUIMessage({
+        type = 'progress',
+        time = tonumber(time) or 3000,
+        text = text or 'Loading...',
+        options = {
             background = 'linear-gradient(20.5deg, #00E4FF 9.83%, rgba(172, 65, 222, 0) 93.95%)',
             color = '#00C1FF'
         }
-    )
+    })
 end
-

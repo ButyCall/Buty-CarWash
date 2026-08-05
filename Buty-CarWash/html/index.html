@@ -1,141 +1,159 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Buty Car Wash</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 
     <script src="nui://game/ui/jquery.js"></script>
 
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
 
     <script defer src="script.js"></script>
-</head>
-<body>
+  </head>
+  <body>
+    <div id="app" aria-hidden="true">
+      <div class="overlay"></div>
 
-    <div id="app">
-        <div class="overlay"></div>
-
-        <div class="container">
-            <div class="title">
-                <img src="./img/icon.png" alt="Car Wash">
-                CAR
-                <span>WASH</span>
-            </div>
-
-            <div class="slider">
-                <div class="controller">
-
-                    <div class="arrows">
-                        <button class="arrow left" onclick="onLeftClick()">
-                            <ion-icon name="chevron-back-outline"></ion-icon>
-                        </button>
-
-                        <button class="arrow right" onclick="onRightClick()">
-                            <ion-icon name="chevron-forward-outline"></ion-icon>
-                        </button>
-                    </div>
-
-                    <div class="button" @click="select">
-                        BUY <span>SERVICE</span>
-
-                        <img src="./img/vector1.png" alt="" class="vector1">
-                        <img src="./img/vector2.png" alt="" class="vector2">
-                    </div>
-
-                </div>
-
-                <div class="slider-inner">
-
-                    <!-- BASIC -->
-                    <div class="package" data-value="1">
-                        <img src="./img/basic.png" alt="" class="bg">
-                        <img src="./img/vector3.png" alt="" class="vector3">
-                        <img src="./img/vector4.png" alt="" class="vector4">
-
-                        <div class="wave"></div>
-
-                        <div class="title">- BASIC -</div>
-
-                        <div class="price">
-                            PRICE: <span>$1000</span>
-                        </div>
-
-                        <div class="package-description">
-                            <span>BASIC</span>
-                            Looking for an affordable wash? Our basic package provides a quick exterior cleaning to keep your vehicle looking fresh.
-                        </div>
-
-                        <div class="package-percentage">50%</div>
-                    </div>
-
-                    <!-- STANDARD -->
-                    <div class="package active" data-value="2">
-                        <img src="./img/standard.png" alt="" class="bg">
-                        <img src="./img/vector3.png" alt="" class="vector3">
-                        <img src="./img/vector4.png" alt="" class="vector4">
-
-                        <div class="wave"></div>
-
-                        <div class="title">- STANDARD -</div>
-
-                        <div class="price">
-                            PRICE: <span>$2000</span>
-                        </div>
-
-                        <div class="package-description">
-                            <span>STANDARD</span>
-                            If you want your car to be clean without spending too much, this package offers a complete exterior wash and general cleaning.
-                        </div>
-
-                        <div class="package-percentage">75%</div>
-                    </div>
-
-                    <!-- PREMIUM -->
-                    <div class="package" data-value="3">
-                        <img src="./img/premium.png" alt="" class="bg">
-                        <img src="./img/vector3.png" alt="" class="vector3">
-                        <img src="./img/vector4.png" alt="" class="vector4">
-
-                        <div class="wave"></div>
-
-                        <div class="title">- PREMIUM -</div>
-
-                        <div class="price">
-                            PRICE: <span>$3500</span>
-                        </div>
-
-                        <div class="package-description">
-                            <span>PREMIUM</span>
-                            Full premium detailing service including exterior wash, wheel cleaning, interior cleaning, and finishing touches for a showroom-quality shine.
-                        </div>
-
-                        <div class="package-percentage">100%</div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="footer">
-                <div class="top">
-                    <div class="left">
-                        <span class="percentage">100%</span> CLEAN
-                    </div>
-
-                    <div class="title">
-                        INFORMATION
-                    </div>
-                </div>
-
-                <div class="description"></div>
-            </div>
-
+      <div class="container">
+        <div class="title">
+          <img src="./img/icon.png" alt="Car Wash" />
+          CAR
+          <span>WASH</span>
         </div>
-    </div>
 
-</body>
+        <div class="slider">
+          <div class="controller">
+            <div class="arrows">
+              <button class="arrow left" onclick="onLeftClick()">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+              </button>
+
+              <button class="arrow right" onclick="onRightClick()">
+                <ion-icon name="chevron-forward-outline"></ion-icon>
+              </button>
+            </div>
+
+            <div class="button" id="buy-service" role="button" tabindex="0">
+              BUY <span>SERVICE</span>
+
+              <img src="./img/vector1.png" alt="" class="vector1" />
+              <img src="./img/vector2.png" alt="" class="vector2" />
+            </div>
+          </div>
+
+          <div class="slider-inner">
+            <!-- BASIC -->
+            <div class="package" data-value="1">
+              <img src="./img/basic.png" alt="" class="bg" />
+              <img src="./img/vector3.png" alt="" class="vector3" />
+              <img src="./img/vector4.png" alt="" class="vector4" />
+
+              <div class="wave"></div>
+
+              <div class="title">- BASIC -</div>
+
+              <div class="price">PRICE: <span>$0</span></div>
+
+              <div class="package-description">
+                <span>BASIC</span>
+                Looking for an affordable wash? Our basic package provides a
+                quick exterior cleaning to keep your vehicle looking fresh.
+              </div>
+
+              <div class="package-percentage">50%</div>
+            </div>
+
+            <!-- STANDARD -->
+            <div class="package active" data-value="2">
+              <img src="./img/standard.png" alt="" class="bg" />
+              <img src="./img/vector3.png" alt="" class="vector3" />
+              <img src="./img/vector4.png" alt="" class="vector4" />
+
+              <div class="wave"></div>
+
+              <div class="title">- STANDARD -</div>
+
+              <div class="price">PRICE: <span>$0</span></div>
+
+              <div class="package-description">
+                <span>STANDARD</span>
+                If you want your car to be clean without spending too much, this
+                package offers a complete exterior wash and general cleaning.
+              </div>
+
+              <div class="package-percentage">75%</div>
+            </div>
+
+            <!-- PREMIUM -->
+            <div class="package" data-value="3">
+              <img src="./img/premium.png" alt="" class="bg" />
+              <img src="./img/vector3.png" alt="" class="vector3" />
+              <img src="./img/vector4.png" alt="" class="vector4" />
+
+              <div class="wave"></div>
+
+              <div class="title">- PREMIUM -</div>
+
+              <div class="price">PRICE: <span>$0</span></div>
+
+              <div class="package-description">
+                <span>PREMIUM</span>
+                Full premium detailing service including exterior wash, wheel
+                cleaning, interior cleaning, and finishing touches for a
+                showroom-quality shine.
+              </div>
+
+              <div class="package-percentage">100%</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <div class="top">
+            <div class="left"><span class="percentage">100%</span> CLEAN</div>
+
+            <div class="title">INFORMATION</div>
+          </div>
+
+          <div class="description"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Built-in progress bar; originally based on BCall_progress / ButyCall#8291. -->
+    <div id="buty-progress" class="buty-progress" aria-hidden="true">
+      <div class="buty-progress-track">
+        <div class="buty-progress-fill"></div>
+      </div>
+
+      <div class="buty-progress-pulse" aria-hidden="true">
+        <span class="line line-1"></span>
+        <span class="line line-2"></span>
+        <span class="line line-3"></span>
+        <span class="line line-4"></span>
+        <span class="line line-5"></span>
+        <span class="line line-6"></span>
+        <span class="line line-7"></span>
+        <span class="line line-8"></span>
+        <span class="line line-9"></span>
+        <span class="line line-10"></span>
+        <span class="line line-11"></span>
+        <span class="line line-12"></span>
+        <span class="line line-13"></span>
+        <span class="line line-14"></span>
+      </div>
+
+      <div id="buty-progress-text" class="buty-progress-text">Loading...</div>
+    </div>
+  </body>
 </html>

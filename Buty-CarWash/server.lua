@@ -33,11 +33,12 @@ end
 GetCore()
 
 if Framework == 'esx' then
-    Core.RegisterServerCallback('buty:getMoney', function(source, cb, Type, price)
+    Core.RegisterServerCallback('buty:getMoney', function(source, cb, Type)
         local xPlayer = Core.GetPlayerFromId(source)
-        price = tonumber(price)
+        local packageIndex = tonumber(Type)
+        local price = packageIndex and tonumber(Configuration.Prices[packageIndex]) or nil
 
-        if not xPlayer or not price then
+        if not xPlayer or not price or price < 0 then
             cb(false)
             return
         end
@@ -54,11 +55,12 @@ if Framework == 'esx' then
     end)
 
 elseif Framework == 'qbcore' then
-    Core.Functions.CreateCallback('buty:getMoney', function(source, cb, Type, price)
+    Core.Functions.CreateCallback('buty:getMoney', function(source, cb, Type)
         local Player = Core.Functions.GetPlayer(source)
-        price = tonumber(price)
+        local packageIndex = tonumber(Type)
+        local price = packageIndex and tonumber(Configuration.Prices[packageIndex]) or nil
 
-        if not Player or not price then
+        if not Player or not price or price < 0 then
             cb(false)
             return
         end
@@ -78,10 +80,11 @@ elseif Framework == 'qbcore' then
     end)
 
 elseif Framework == 'qbox' then
-    lib.callback.register('buty:getMoney', function(source, Type, price)
-        price = tonumber(price)
+    lib.callback.register('buty:getMoney', function(source, Type)
+        local packageIndex = tonumber(Type)
+        local price = packageIndex and tonumber(Configuration.Prices[packageIndex]) or nil
 
-        if not price then
+        if not price or price < 0 then
             return false
         end
 
